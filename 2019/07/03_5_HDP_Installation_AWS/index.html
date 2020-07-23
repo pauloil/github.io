@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Stay Hungry,Stay Foolish.">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="CHEN ZHIQIANG">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="HDP_Installation_AWS"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Stay Hungry,Stay Foolish." />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Sauriky&#39;s World"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>HDP_Installation_AWS - Sauriky&#39;s World</title>
+
+
+  <link rel="shortcut icon" href="https://hinpc.com/asserts/img/hi-logo-with-bg.v17.8.png">
+
+  <!-- Custom CSS/Sass -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://avatars0.githubusercontent.com/u/48395533?s=400&u=9800bb4c4a63592fbbd0fcdb7aef2ba0df5efe1f&v=4" alt="Sauriky's World" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            HDP_Installation_AWS
+            
+          </h1>
+          <p class="posted-on">
+          2019-07-12
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端AWS/" rel="tag">
+                  前端AWS
+                </a>
+              
+                <a href="/tags/HDP/" rel="tag">
+                  HDP
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h1 id="03-5-HDP-Installation-AWS"><a href="#03-5-HDP-Installation-AWS" class="headerlink" title="03_5_HDP_Installation_AWS"></a>03_5_HDP_Installation_AWS</h1><h2 id="0-Objectives"><a href="#0-Objectives" class="headerlink" title="0. Objectives"></a>0. Objectives</h2><p>This document provides step-by-step instruction for installing each component of the HDP &amp; HDF platform in AWS Centos 7.</p>
+<h2 id="1-Pre-Installation"><a href="#1-Pre-Installation" class="headerlink" title="1. Pre-Installation"></a>1. Pre-Installation</h2><blockquote>
+<p>(All nodes)Config hostname and hosts</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> (all servers)/etc/hosts</span></span><br><span class="line">vim /etc/hosts</span><br><span class="line">172.31.2.160 hdp01.hadoop.com hdp01</span><br><span class="line">172.31.5.171 hdp02.hadoop.com hdp02</span><br><span class="line">172.31.4.113 hdp03.hadoop.com hdp03</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> (all servers)hostname</span></span><br><span class="line">vim /etc/hostname</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(All nodes)Disable SELinux</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo sed -i -e "s/^SELINUX=enforcing$/SELINUX=disabled/g" /etc/selinux/config</span><br><span class="line">cat /etc/selinux/config</span><br><span class="line">getenforce</span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(All nodes)Install and Start ntpd Service</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ntp</span><br><span class="line">systemctl enable ntpd</span><br><span class="line">systemctl start ntpd</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(On ambari server only)Setting Login without password</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">cat .ssh/id_rsa.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPODX0nRWzqkpzyT3SZtBIhOSWPVJB8dOQ3fI6HxHNVRBTaDXYQCavA3+9C/esrysQkAMd2o/97VpAHtMmjK4+wSikNmZv3kxuNkL9ue0UKu3Z/HulrzN1LSVUg/Qdm9BnFAvnU0xrnnP7PPqi155d6uplYBkU43cKaA1suSsXRM6wipOQ2JXxo1o7BzdEpEib7iHJ+3vGv9BGQ2O2DDZlf3/OY7HHYqprZGxkLB/qxvlj/6uUoVEtI+QR8glpFxX2aecS5gytK8uNY2oBTGM5/1xVgtx33Surj+wTulEBS7IV2RdCAEK86ymJWmT52xIddNjjgum3HrHmfjAaXI6/ root@hdp01.hadoop.com</span><br><span class="line"></span><br><span class="line">vim .ssh/authorized_keys</span><br><span class="line">chmod 700 .ssh</span><br><span class="line">chmod 400 .ssh/authorized_keys</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> allow root to ssh</span></span><br><span class="line">vi /etc/ssh/sshd_config</span><br><span class="line">PermitRootLogin yes</span><br><span class="line"></span><br><span class="line">service sshd reload</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(All nodes)install java</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">yum search jdk</span><br><span class="line">yum install -y java-1.8.0-openjdk.x86_64</span><br><span class="line">echo &quot;export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;jre-1.8.0-openjdk&quot; &gt;&gt; &#x2F;etc&#x2F;profile</span><br><span class="line">echo &quot;export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH&quot; &gt;&gt; &#x2F;etc&#x2F;profile</span><br><span class="line">source &#x2F;etc&#x2F;profile</span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+
+<h2 id="Install-and-config-database-mariadb"><a href="#Install-and-config-database-mariadb" class="headerlink" title="Install and config database(mariadb)"></a>Install and config database(mariadb)</h2><blockquote>
+<p>(On hdp01 server)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mariadb-server</span><br><span class="line">yum install -y mysql-connector-java*</span><br><span class="line">systemctl start mariadb.service</span><br><span class="line">systemctl enable mariadb.service</span><br><span class="line">/usr/bin/mysql_secure_installation</span><br><span class="line"></span><br><span class="line">mysql -u root -proot</span><br><span class="line">-- hive</span><br><span class="line">CREATE USER 'hive'@'localhost' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'hive'@'localhost';</span><br><span class="line">CREATE USER 'hive'@'%' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%';</span><br><span class="line">CREATE USER 'hive'@'hdp03.hadoop.com' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'hive'@'hdp03.hadoop.com';</span><br><span class="line">CREATE DATABASE metastore;</span><br><span class="line"></span><br><span class="line">-- ambari</span><br><span class="line">CREATE USER 'ambari'@'%' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'ambari'@'%';</span><br><span class="line">CREATE USER 'ambari'@'localhost' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'ambari'@'localhost';</span><br><span class="line">CREATE USER 'ambari'@'hdp01.hadoop.com' IDENTIFIED BY 'bigdata';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'ambari'@'hdp01.hadoop.com';</span><br><span class="line">CREATE DATABASE ambari;</span><br><span class="line"></span><br><span class="line">-- oozie</span><br><span class="line">CREATE DATABASE oozie;</span><br><span class="line">USE oozie;</span><br><span class="line">CREATE USER 'oozie'@'%' IDENTIFIED BY 'oozie';</span><br><span class="line">GRANT ALL ON *.* TO 'oozie'@'%';</span><br><span class="line"></span><br><span class="line">-- knox</span><br><span class="line">CREATE DATABASE knox;</span><br><span class="line">USE knox;</span><br><span class="line">CREATE USER 'knox'@'%' IDENTIFIED BY 'knox';</span><br><span class="line">GRANT ALL ON *.* TO 'knox'@'%';</span><br><span class="line"></span><br><span class="line">-- ranger</span><br><span class="line">CREATE USER 'rangerdba'@'localhost' IDENTIFIED BY 'rangerdba';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'localhost';</span><br><span class="line">CREATE USER 'rangerdba'@'%' IDENTIFIED BY 'rangerdba';</span><br><span class="line">CREATE USER 'rangerdba'@'hdp02.hadoop.com' IDENTIFIED BY 'rangerdba';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'hdp02.hadoop.com' WITH GRANT OPTION;</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'localhost' WITH GRANT OPTION;</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'%' WITH GRANT OPTION;</span><br><span class="line">create database ranger;</span><br><span class="line">CREATE USER 'rangerdba'@'hdp01.hadoop.com' IDENTIFIED BY 'rangerdba';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'rangerdba'@'hdp01.hadoop.com' WITH GRANT OPTION;</span><br><span class="line"></span><br><span class="line">-- Hue</span><br><span class="line">CREATE USER 'hue'@'%' IDENTIFIED BY 'hue';</span><br><span class="line">GRANT ALL ON *.* TO 'hue'@'%';</span><br><span class="line">CREATE USER 'hue'@'localhost' IDENTIFIED BY 'hue';</span><br><span class="line">GRANT ALL PRIVILEGES on *.* to 'hue'@'localhost' WITH GRANT OPTION;</span><br><span class="line">GRANT ALL on hue.* to 'hue'@'localhost';</span><br><span class="line">CREATE DATABASE hue;</span><br><span class="line"></span><br><span class="line">--SAM</span><br><span class="line">create database registry;</span><br><span class="line">CREATE USER 'registry'@'%' IDENTIFIED BY 'registry';</span><br><span class="line">GRANT ALL ON *.* TO 'registry'@'%';</span><br><span class="line">create database streamline;</span><br><span class="line">CREATE USER 'streamline'@'%' IDENTIFIED BY 'streamline';</span><br><span class="line">GRANT ALL ON *.* TO 'streamline'@'%';</span><br><span class="line"></span><br><span class="line">--Druid</span><br><span class="line">CREATE DATABASE druid DEFAULT CHARACTER SET utf8;</span><br><span class="line">CREATE DATABASE superset DEFAULT CHARACTER SET utf8;</span><br><span class="line">CREATE USER 'druid'@'%' IDENTIFIED BY 'druid';</span><br><span class="line">CREATE USER 'superset'@'%' IDENTIFIED BY 'superset';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'druid'@'%' WITH GRANT OPTION;</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'superset'@'%' WITH GRANT OPTION;</span><br><span class="line">CREATE USER 'druid'@'localhost' IDENTIFIED BY 'druid';</span><br><span class="line">CREATE USER 'superset'@'localhost' IDENTIFIED BY 'superset';</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'druid'@'localhost' WITH GRANT OPTION;</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'superset'@'localhost' WITH GRANT OPTION;</span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Config-Ambari-Repo"><a href="#Config-Ambari-Repo" class="headerlink" title="Config Ambari Repo"></a>Config Ambari Repo</h2><blockquote>
+<p>(On hdp01 server)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/yum.repos.d/</span><br><span class="line">wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.7.3.0/ambari.repo -O /etc/yum.repos.d/ambari.repo</span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+
+<h2 id="ambari-installation-and-Config"><a href="#ambari-installation-and-Config" class="headerlink" title="ambari installation and Config"></a>ambari installation and Config</h2><blockquote>
+<p>(On hdp01 server) ambari installation</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ambari-server</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(On hdp01 server)ambari setup</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ambari-server setup</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>(On hdp01 server)ambari start</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ambari-server start</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+
+<h2 id="HDF-mpack-install"><a href="#HDF-mpack-install" class="headerlink" title="HDF mpack install"></a>HDF mpack install</h2><blockquote>
+<p>(On hdp01 server)HDF mpack install</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget http://public-repo-1.hortonworks.com/HDF/centos7/3.x/updates/3.4.0.0/tars/hdf_ambari_mp/hdf-ambari-mpack-3.4.0.0-155.tar.gz</span><br><span class="line"></span><br><span class="line">mv hdf-ambari-mpack-3.4.0.0-155.tar.gz /tmp/</span><br><span class="line">ambari-server install-mpack \</span><br><span class="line">--mpack=/tmp/hdf-ambari-mpack-3.4.0.0-155.tar.gz \</span><br><span class="line">--verbose</span><br><span class="line"></span><br><span class="line">ambari-server restart</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Back-up-mysql-db"><a href="#Back-up-mysql-db" class="headerlink" title="Back up mysql db"></a>Back up mysql db</h2><blockquote>
+<p>(On hdp01 server)Back up mysql db</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -proot --all-databases &gt; alldb.sql;</span><br></pre></td></tr></table></figure>
+
+<h2 id="HDP-HDF-deploy"><a href="#HDP-HDF-deploy" class="headerlink" title="HDP/HDF deploy"></a>HDP/HDF deploy</h2><blockquote>
+<p>(On Web)</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ambari-server setup --jdbc-db=mysql --jdbc-driver=/usr/share/java/mysql-connector-java.jar</span><br><span class="line"></span><br><span class="line">http://ec2-18-188-54-141.us-east-2.compute.amazonaws.com:8080</span><br><span class="line">admin/admin</span><br></pre></td></tr></table></figure>
+
+<p>###</p>
+<blockquote>
+<p>Login</p>
+</blockquote>
+<p><img src="./screenshot/03_1/01.jpg" alt=""></p>
+<blockquote>
+<p>Lunch Install Wizard</p>
+</blockquote>
+<p><img src="./screenshot/03_1/02.jpg" alt=""></p>
+<blockquote>
+<p>Input Cluster Name</p>
+</blockquote>
+<p><img src="./screenshot/03_1/03.jpg" alt=""></p>
+<blockquote>
+<p>Choose Version</p>
+</blockquote>
+<p><img src="./screenshot/03_1/04.jpg" alt=""></p>
+<blockquote>
+<p>Input Target Hosts/Private key/ssh user account/Port</p>
+</blockquote>
+<p><img src="./screenshot/03_1/05.jpg" alt=""></p>
+<blockquote>
+<p>Wait for Confirm Hosts</p>
+</blockquote>
+<p><img src="./screenshot/03_1/06.jpg" alt=""></p>
+<blockquote>
+<p>Choose File System/Service(better not to choose all, will be slow)</p>
+</blockquote>
+<p><img src="./screenshot/03_1/07.jpg" alt=""></p>
+<blockquote>
+<p>Assign Masters Nodes</p>
+</blockquote>
+<p><img src="./screenshot/03_1/08.jpg" alt=""></p>
+<blockquote>
+<p>Assign Slaves and Clients Node</p>
+</blockquote>
+<p><img src="./screenshot/03_1/09.jpg" alt=""></p>
+<blockquote>
+<p>Customize Services</p>
+</blockquote>
+<p><img src="./screenshot/03_1/10.jpg" alt=""></p>
+<blockquote>
+<p>Customize Services</p>
+</blockquote>
+<p><img src="./screenshot/03_1/11.jpg" alt=""></p>
+<blockquote>
+<p>Customize Services</p>
+</blockquote>
+<p><img src="./screenshot/03_1/12.jpg" alt=""></p>
+<blockquote>
+<p>Review Settings</p>
+</blockquote>
+<p><img src="./screenshot/03_1/13.jpg" alt=""></p>
+<blockquote>
+<p>Install, Start and Test</p>
+</blockquote>
+<p><img src="./screenshot/03_1/14.jpg" alt=""></p>
+<blockquote>
+<p>Summary and Complete</p>
+</blockquote>
+<p><img src="./screenshot/03_1/15.jpg" alt=""></p>
+<blockquote>
+<p>Ambari Dashborad</p>
+</blockquote>
+<p><img src="./screenshot/03_1/16.jpg" alt=""></p>
+<h2 id="The-End"><a href="#The-End" class="headerlink" title="=============The End ================"></a>=============The End ================</h2>
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-03_5_HDP_Installation_AWS';
+          this.page.title = 'HDP_Installation_AWS';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/07/ambari openssl 版本问题：SSLError Failed to connect. Please check openssl library versions/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/07/VMware12+CentOS Linux Release 7.2在nat模式下设置静态IP地址/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">日语专业小白转程序员。<br>阅读使人明智。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/pauloil" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:sauriky29@gamil.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Sauriky's World &copy; 2020</span>
+    
+      <span class="split">|</span>
+      <span>Powered by Sauriky</span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+
+<script src="/js/app.js"></script>
+
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'blog.sauriky.site/2019/07/03_5_HDP_Installation_AWS/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

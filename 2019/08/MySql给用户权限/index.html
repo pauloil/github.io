@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Stay Hungry,Stay Foolish.">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="CHEN ZHIQIANG">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="MySql给用户权限"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Stay Hungry,Stay Foolish." />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Sauriky&#39;s World"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>MySql给用户权限 - Sauriky&#39;s World</title>
+
+
+  <link rel="shortcut icon" href="https://hinpc.com/asserts/img/hi-logo-with-bg.v17.8.png">
+
+  <!-- Custom CSS/Sass -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://avatars0.githubusercontent.com/u/48395533?s=400&u=9800bb4c4a63592fbbd0fcdb7aef2ba0df5efe1f&v=4" alt="Sauriky's World" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            MySql给用户权限
+            
+          </h1>
+          <p class="posted-on">
+          2019-08-10
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/MySql/" rel="tag">
+                  MySql
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h2 id="MySql给用户权限"><a href="#MySql给用户权限" class="headerlink" title="MySql给用户权限"></a>MySql给用户权限</h2><p>priv_type代表允许操作的权限。ALL PRIVILEGES 代表所有权限</p>
+<p> database.table代表数据库名.表名<br>  注意<em>代表所有，如database.*代表该数据库的所有表，</em>.*代表所有数据库的所有表</p>
+<p>   user由用户名(User)和主机名(Host)构成,中间用@隔开，最好加上单引号，不加也可以执行通过。</p>
+<pre><code>es: &apos;web&apos;@&apos;%&apos;  或 &apos;web1&apos;@&apos;192.168.2.232&apos;</code></pre><p>   password代表设置的密码</p>
+<p>最后刷新权限:</p>
+<p>FLUSH PRIVILEGES;</p>
+<p>es:</p>
+<p>GRANT ALL PRIVILEGES ON <em>.</em> TO ‘web’@’%’ IDENTIFIED BY  ‘testpassword’;</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-MySql给用户权限';
+          this.page.title = 'MySql给用户权限';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/09/FlowFile存储库/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/08/Ambari 第一次启动异常没有mysql驱动/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">日语专业小白转程序员。<br>阅读使人明智。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/pauloil" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:sauriky29@gamil.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Sauriky's World &copy; 2020</span>
+    
+      <span class="split">|</span>
+      <span>Powered by Sauriky</span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+
+<script src="/js/app.js"></script>
+
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'blog.sauriky.site/2019/08/MySql%E7%BB%99%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

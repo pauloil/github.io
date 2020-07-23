@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Stay Hungry,Stay Foolish.">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="CHEN ZHIQIANG">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="安装及部署Hadoop"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Stay Hungry,Stay Foolish." />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Sauriky&#39;s World"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>安装及部署Hadoop - Sauriky&#39;s World</title>
+
+
+  <link rel="shortcut icon" href="https://hinpc.com/asserts/img/hi-logo-with-bg.v17.8.png">
+
+  <!-- Custom CSS/Sass -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://avatars0.githubusercontent.com/u/48395533?s=400&u=9800bb4c4a63592fbbd0fcdb7aef2ba0df5efe1f&v=4" alt="Sauriky's World" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            安装及部署Hadoop
+            
+          </h1>
+          <p class="posted-on">
+          2019-09-18
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/前端AWS/" rel="tag">
+                  前端AWS
+                </a>
+              
+                <a href="/tags/HDP/" rel="tag">
+                  HDP
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h2 id="安装及部署Hadoop"><a href="#安装及部署Hadoop" class="headerlink" title="安装及部署Hadoop"></a>安装及部署Hadoop</h2><p>本文着重介绍如何安装Ambari，并简单描述如何使用Ambari部署Hadoop服务。</p>
+<p>操作系统：CentOS 7</p>
+<p>网络：内部局域网</p>
+<p>Ambari版本：2.6.1.0</p>
+<p>HDP版本：2.6.4.0</p>
+<p>在不能连接外网的情况下，我需要预先下载相应的<a href="http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.6.1.0/ambari-2.6.1.0-centos7.tar.gz" target="_blank" rel="noopener">Ambari安装源</a>和<a href="http://public-repo-1.hortonworks.com/HDP/centos7/2.x/updates/2.6.4.0/HDP-2.6.4.0-centos7-rpm.tar.gz" target="_blank" rel="noopener">HDP安装源</a>以及<a href="http://public-repo-1.hortonworks.com/HDP-UTILS-1.1.0.22/repos/centos7/HDP-UTILS-1.1.0.22-centos7.tar.gz" target="_blank" rel="noopener">HDP-UTILS安装源</a>。</p>
+<blockquote>
+<p>如果在一个可以连接外网的环境中，也可以直接使用Hortonworks提供的线上源，不过一般来说，使用线上源安装比较慢，你懂的。</p>
+</blockquote>
+<h2 id="机器信息"><a href="#机器信息" class="headerlink" title="机器信息"></a>机器信息</h2><p>共5台机器，信息如下：</p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>IP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xwd1</td>
+<td>192.168.0.101</td>
+</tr>
+<tr>
+<td>xwd2</td>
+<td>192.168.0.102</td>
+</tr>
+<tr>
+<td>xwd3</td>
+<td>192.168.0.103</td>
+</tr>
+<tr>
+<td>xwd4</td>
+<td>192.168.0.104</td>
+</tr>
+<tr>
+<td>xwd5</td>
+<td>192.168.0.105</td>
+</tr>
+</tbody></table>
+<p><strong>以下操作用户均为root用户</strong>。</p>
+<h2 id="添加主机映射信息"><a href="#添加主机映射信息" class="headerlink" title="添加主机映射信息"></a>添加主机映射信息</h2><h4 id="操作机器：xwd1"><a href="#操作机器：xwd1" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><p>编辑<code>/etc.hosts</code>文件，填写以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4::1         localhost localhost.localdomain localhost6 localhost6.localdomain6192.168.0.101 xwd1192.168.0.102 xwd2192.168.0.103 xwd3192.168.0.104 xwd4192.168.0.105 xwd5</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置免密登录"><a href="#设置免密登录" class="headerlink" title="设置免密登录"></a>设置免密登录</h2><h4 id="操作机器：xwd1-1"><a href="#操作机器：xwd1-1" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><p>创建密钥</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+
+<p>设置免密登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id xwd1ssh-copy-id xwd2ssh-copy-id xwd3ssh-copy-id xwd4ssh-copy-id xwd5</span><br></pre></td></tr></table></figure>
+
+<h2 id="同步主机映射文件"><a href="#同步主机映射文件" class="headerlink" title="同步主机映射文件"></a>同步主机映射文件</h2><h4 id="操作机器：xwd1-2"><a href="#操作机器：xwd1-2" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp &#x2F;etc&#x2F;hosts root@xwd2:&#x2F;etc&#x2F;hostsscp &#x2F;etc&#x2F;hosts root@xwd3:&#x2F;etc&#x2F;hostsscp &#x2F;etc&#x2F;hosts root@xwd4:&#x2F;etc&#x2F;hostsscp &#x2F;etc&#x2F;hosts root@xwd5:&#x2F;etc&#x2F;hosts</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建本地系统源"><a href="#创建本地系统源" class="headerlink" title="创建本地系统源"></a>创建本地系统源</h2><blockquote>
+<p>如果在一个可以连接外网的环境中，则可以跳过这一步。</p>
+</blockquote>
+<p>分别在五台机器上备份系统自带系统源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;opt&#x2F;reposmv &#x2F;etc&#x2F;yum.repos.d&#x2F;* &#x2F;opt&#x2F;repos&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h4 id="操作机器：xwd2"><a href="#操作机器：xwd2" class="headerlink" title="操作机器：xwd2"></a>操作机器：xwd2</h4><p>经过查找发现，xwd2主机的<code>/run/media/root/CentOS 7 x86_64</code>目录挂载了系统源，但是重启之后，这个挂载目录就会消失，为了方便，决定在xwd2机器上提供http的局域网本地系统源服务。</p>
+<p>创建本地系统源文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;yum.repos.d&#x2F;touch CentOS-Local.repo</span><br></pre></td></tr></table></figure>
+
+<p>编辑<code>CentOS-Local.repo</code>，写入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Local]name&#x3D;CentOS&#x3D;$releasever - Localbaseurl&#x3D;file:&#x2F;&#x2F;&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS\ 7\ x86_64&#x2F;gpgcheck&#x3D;1enabled&#x3D;1gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS\ 7\ x86_64&#x2F;RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<p>安装http服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpdsystemctl start httpdsystemctl enable httpd</span><br></pre></td></tr></table></figure>
+
+<p>拷贝源文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir &#x2F;var&#x2F;www&#x2F;html&#x2F;centos7cd &#x2F;run&#x2F;media&#x2F;root&#x2F;CentOS\ 7\ x86_64&#x2F;cp -r Packages RPM-GPG-KEY-CentOS-7 &#x2F;var&#x2F;www&#x2F;html&#x2F;centos7&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>生成源信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;var&#x2F;www&#x2F;html&#x2F;centos7createrepo .&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h4 id="操作机器：xwd1-3"><a href="#操作机器：xwd1-3" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><p>编辑<code>CentOS-Local.repo</code>，写入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Local]name&#x3D;CentOS&#x3D;$releasever - Localbaseurl&#x3D;http:&#x2F;&#x2F;xwd2&#x2F;centos7&#x2F;gpgcheck&#x3D;1enabled&#x3D;1gpgkey&#x3D;http:&#x2F;&#x2F;xwd2&#x2F;centos7&#x2F;RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<p>同步本地系统源文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Local.repo root@xwd2:&#x2F;etc&#x2F;yum.repos.d&#x2F;scp &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Local.repo root@xwd3:&#x2F;etc&#x2F;yum.repos.d&#x2F;scp &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Local.repo root@xwd4:&#x2F;etc&#x2F;yum.repos.d&#x2F;scp &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Local.repo root@xwd5:&#x2F;etc&#x2F;yum.repos.d&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><h4 id="操作机器：所有"><a href="#操作机器：所有" class="headerlink" title="操作机器：所有"></a>操作机器：所有</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalldsystemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置selinux配置"><a href="#设置selinux配置" class="headerlink" title="设置selinux配置"></a>设置selinux配置</h3><h4 id="操作机器：所有-1"><a href="#操作机器：所有-1" class="headerlink" title="操作机器：所有"></a>操作机器：所有</h4><p>vim /etc/selinux/config</p>
+<p>将SELINUX的参数值修改为disabled</p>
+<h3 id="设置redhat-transparent-hugepage"><a href="#设置redhat-transparent-hugepage" class="headerlink" title="设置redhat_transparent_hugepage"></a>设置redhat_transparent_hugepage</h3><h4 id="操作机器：所有-2"><a href="#操作机器：所有-2" class="headerlink" title="操作机器：所有"></a>操作机器：所有</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo never &gt; &#x2F;sys&#x2F;kernel&#x2F;mm&#x2F;transparent_hugepage&#x2F;enabled</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置jdk"><a href="#配置jdk" class="headerlink" title="配置jdk"></a>配置jdk</h3><blockquote>
+<p>jdk使用1.8，当前环境使用的是jdk-8u162-linux-x64</p>
+</blockquote>
+<h4 id="操作机器：所有-3"><a href="#操作机器：所有-3" class="headerlink" title="操作机器：所有"></a>操作机器：所有</h4><ol>
+<li><p>创建<code>/opt/software</code>目录</p>
+</li>
+<li><p>将jdk的tar包上传到<code>/opt/software</code>目录下</p>
+</li>
+<li><p>解压tar zxvf jdk-*.tar.gz，然后删除tar包</p>
+</li>
+<li><p>建立软链</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s &#x2F;opt&#x2F;software&#x2F;jdk* &#x2F;opt&#x2F;software&#x2F;jdk</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<blockquote>
+<p>建立软链的目的是方便更换jdk，使用的时候使用jdk这个目录，而不使用真实的jdk目录。</p>
+</blockquote>
+<h3 id="时间同步"><a href="#时间同步" class="headerlink" title="时间同步"></a>时间同步</h3><blockquote>
+<p>时间同步对HBase服务影响最大。</p>
+</blockquote>
+<h4 id="操作机器：所有-4"><a href="#操作机器：所有-4" class="headerlink" title="操作机器：所有"></a>操作机器：所有</h4><p>安装ntp服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install ntp</span><br></pre></td></tr></table></figure>
+
+<p>局域网时间同步设计：</p>
+<table>
+<thead>
+<tr>
+<th>服务器</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xwd1</td>
+<td>作为时间服务器，其他服务器以此服务器为标准同步时间</td>
+</tr>
+<tr>
+<td>xwd2</td>
+<td>使用<code>ntpdate xwd1</code>命令同步时间</td>
+</tr>
+<tr>
+<td>xwd3</td>
+<td>使用<code>ntpdate xwd1</code>命令同步时间</td>
+</tr>
+<tr>
+<td>xwd4</td>
+<td>使用<code>ntpdate xwd1</code>命令同步时间</td>
+</tr>
+<tr>
+<td>xwd5</td>
+<td>使用<code>ntpdate xwd1</code>命令同步时间</td>
+</tr>
+</tbody></table>
+<h4 id="操作机器：xwd1-4"><a href="#操作机器：xwd1-4" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><p>编辑 /etc/ntp.conf 文件如下部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Use public servers from the pool.ntp.org project.# Please consider joining the pool (http:&#x2F;&#x2F;www.pool.ntp.org&#x2F;join.html).#server 0.rhel.pool.ntp.org iburst#server 1.rhel.pool.ntp.org iburst#server 2.rhel.pool.ntp.org iburst#server 3.rhel.pool.ntp.org iburstserver 127.127.1.0fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
+
+<p>如上，注释原有配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#server 0.rhel.pool.ntp.org iburst#server 1.rhel.pool.ntp.org iburst#server 2.rhel.pool.ntp.org iburst#server 3.rhel.pool.ntp.org iburst</span><br></pre></td></tr></table></figure>
+
+<p>添加新配置，让本机的ntpd和本地硬件时间同步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server 127.127.1.0fudge 127.127.1.0 stratum 10</span><br></pre></td></tr></table></figure>
+
+<p>启动ntp服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start ntpdsystemctl enable ntpd</span><br></pre></td></tr></table></figure>
+
+<h4 id="操作机器：xwd2，xwd3，xwd4，xwd5"><a href="#操作机器：xwd2，xwd3，xwd4，xwd5" class="headerlink" title="操作机器：xwd2，xwd3，xwd4，xwd5"></a>操作机器：xwd2，xwd3，xwd4，xwd5</h4><p>关闭ntp服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop ntpdsystemctl disable ntpd</span><br></pre></td></tr></table></figure>
+
+<p>同步时钟：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntpdate xwd1</span><br></pre></td></tr></table></figure>
+
+<p>定时同步，编辑 /etc/crontab 文件，追加内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*&#x2F;5 * * * * root  &#x2F;usr&#x2F;sbin&#x2F;ntpdate xwd1</span><br></pre></td></tr></table></figure>
+
+<p>这里表示每5分钟同步一次。</p>
+<p>然后重启crond服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart crond</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署Ambari"><a href="#部署Ambari" class="headerlink" title="部署Ambari"></a>部署Ambari</h2><h4 id="操作机器：xwd1-5"><a href="#操作机器：xwd1-5" class="headerlink" title="操作机器：xwd1"></a>操作机器：xwd1</h4><p>安装http服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpdsystemctl start httpdsystemctl enable httpd</span><br></pre></td></tr></table></figure>
+
+<p>上传之前下载的三个安装源的tar包到<code>/var/www/html/xwd</code>目录下</p>
+<p>解压后，分别进入目录执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">createrepo .&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>创建并编辑<code>/etc/yum.repo.d/ambari.repo</code>文件，添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[xwd]name&#x3D;ambaribaseurl&#x3D;http:&#x2F;&#x2F;xwd1&#x2F;xwd&#x2F;ambarienabled&#x3D;1gpgcheck&#x3D;0</span><br></pre></td></tr></table></figure>
+
+<p>安装ambari</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum clean allyum install ambari-server</span><br></pre></td></tr></table></figure>
+
+<p>初始化ambari，jdk选择本地目录<code>/opt/software/jdk</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ambari-server setup</span><br></pre></td></tr></table></figure>
+
+<p>启动ambari</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ambari-server start</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署Hadoop和ZooKeeper"><a href="#部署Hadoop和ZooKeeper" class="headerlink" title="部署Hadoop和ZooKeeper"></a>部署Hadoop和ZooKeeper</h2><blockquote>
+<p>这里需要确认安装源中是否有 snappy-devel 这个包，Hadoop安装时会依赖这个包，而这个包不在系统默认的安装源中。也可以手动安装，使用<code>rpm -ivh 包名</code>。如果在一个可以连接外网的环境中，则不必担心这个问题。</p>
+</blockquote>
+<p>浏览器访问 <a href="http://192.168.0.101:8080。/">http://192.168.0.101:8080。</a></p>
+<p>登录账号密码：admin/admin</p>
+<h4 id="启动安装向导"><a href="#启动安装向导" class="headerlink" title="启动安装向导"></a>启动安装向导</h4><p>集群名：xwd</p>
+<p>版本：HDP2.6</p>
+<p>操作系统：redhat7</p>
+<p>Base URL：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HDP</td>
+<td><a href="http://xwd1/xwd/HDP" target="_blank" rel="noopener">http://xwd1/xwd/HDP</a></td>
+</tr>
+<tr>
+<td>HDP-UTILS</td>
+<td><a href="http://xwd1/xwd/HDP-UTILS" target="_blank" rel="noopener">http://xwd1/xwd/HDP-UTILS</a></td>
+</tr>
+</tbody></table>
+<p>目标主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xwd1xwd2xwd3xwd4xwd5</span><br></pre></td></tr></table></figure>
+
+<p>私钥：使用xwd1主机的<code>/root/.ssh/id_rsa</code>文件内容。</p>
+<p>选择服务：HDFS，ZooKeeper</p>
+<h4 id="安装HDFS和ZooKeeper"><a href="#安装HDFS和ZooKeeper" class="headerlink" title="安装HDFS和ZooKeeper"></a>安装HDFS和ZooKeeper</h4><p>分配Masters：默认</p>
+<p>分配Slaves和Clients：DataNode和Client全选</p>
+<p>定制服务：</p>
+<blockquote>
+<p>假定数据盘挂在到<code>/data</code>目录。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Ambari配置</th>
+<th>对应的服务配置</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NameNode directories</td>
+<td>dfs.namenode.name.dir</td>
+<td>/data/hadoop/hdfs/namenode</td>
+</tr>
+<tr>
+<td>DataNode directories</td>
+<td>dfs.datanode.data.dir</td>
+<td>/data/hadoop/hdfs/data</td>
+</tr>
+</tbody></table>
+<h4 id="安装YARN-MapReduce2"><a href="#安装YARN-MapReduce2" class="headerlink" title="安装YARN+MapReduce2"></a>安装YARN+MapReduce2</h4><p>添加服务</p>
+<p>选择YARN+MapReduce2</p>
+<p>分配Master：默认</p>
+<p>分配Slaves和Clients：NodeManager全选</p>
+<p>定制服务：</p>
+<table>
+<thead>
+<tr>
+<th>Ambari配置</th>
+<th>对应的服务配置</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>yarn.nodemanager.local-dirs</td>
+<td>yarn.nodemanager.local-dirs</td>
+<td>/data/hadoop/yarn/local</td>
+</tr>
+<tr>
+<td>yarn.nodemanager.log-dirs</td>
+<td>yarn.nodemanager.log-dirs</td>
+<td>/data/hadoop/yarn/log</td>
+</tr>
+</tbody></table>
+<h4 id="开启NameNode-HA"><a href="#开启NameNode-HA" class="headerlink" title="开启NameNode HA"></a>开启NameNode HA</h4><p>在HDFS服务中，点击操作服务</p>
+<p>选择<code>开启 NameNode HA</code></p>
+<p>Nameservice ID：xwdha</p>
+<p>按照提示操作</p>
+<h4 id="开启ResourceManager-HA"><a href="#开启ResourceManager-HA" class="headerlink" title="开启ResourceManager HA"></a>开启ResourceManager HA</h4><p>在YARN服务中，点击操作服务</p>
+<p>选择<code>开启 ResourceManager HA</code></p>
+<p>按照提示操作</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-安装Ambari及部署Hadoop';
+          this.page.title = '安装及部署Hadoop';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/10/Hadoop-MapReduce/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/09/Git爬坑指南/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">日语专业小白转程序员。<br>阅读使人明智。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/pauloil" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:sauriky29@gamil.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Sauriky's World &copy; 2020</span>
+    
+      <span class="split">|</span>
+      <span>Powered by Sauriky</span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+
+<script src="/js/app.js"></script>
+
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'blog.sauriky.site/2019/09/%E5%AE%89%E8%A3%85Ambari%E5%8F%8A%E9%83%A8%E7%BD%B2Hadoop/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>

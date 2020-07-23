@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!--Description-->
+  
+  <meta name="description" content="Stay Hungry,Stay Foolish.">
+  
+
+  <!--Author-->
+  
+  <meta name="author" content="CHEN ZHIQIANG">
+  
+
+  <!--Open Graph Title-->
+  
+      <meta property="og:title" content="CentOS7安装MySQL8.0"/>
+  
+  <!--Open Graph Description-->
+  
+      <meta property="og:description" content="Stay Hungry,Stay Foolish." />
+  
+  <!--Open Graph Site Name-->
+  <meta property="og:site_name" content="Sauriky&#39;s World"/>
+  <!--Type page-->
+  
+      <meta property="og:type" content="article" />
+  
+  <!--Page Cover-->
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Title -->
+  
+  <title>CentOS7安装MySQL8.0 - Sauriky&#39;s World</title>
+
+
+  <link rel="shortcut icon" href="https://hinpc.com/asserts/img/hi-logo-with-bg.v17.8.png">
+
+  <!-- Custom CSS/Sass -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  <!----------------------------
+  https://github.com/GallenHu/hexo-theme-Daily
+
+ _____            _   _
+|  __ \          (_) | |
+| |  | |   __ _   _  | |  _   _
+| |  | |  / _` | | | | | | | | |
+| |__| | | (_| | | | | | | |_| |
+|_____/   \__,_| |_| |_|  \__, |
+                          __/ |
+                         |___/
+
+    --------------------------->
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+
+  <!-- Nav -->
+  <header class="site-header">
+  <div class="header-inside">
+    <div class="logo">
+      <a href="/" rel="home">
+        
+        <img src="https://avatars0.githubusercontent.com/u/48395533?s=400&u=9800bb4c4a63592fbbd0fcdb7aef2ba0df5efe1f&v=4" alt="Sauriky's World" height="60">
+        
+      </a>
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse">
+        <ul class="navbar-nav">
+          
+          
+            <li>
+              <a href="/.">
+                
+                  Home
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/archives">
+                
+                  Archive
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href="/about">
+                
+                  About
+                
+              </a>
+            </li>
+          
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+    <div class="button-wrap">
+      <button class="menu-toggle">Primary Menu</button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Main Content -->
+  <div class="content-area">
+  <div class="post">
+    <!-- Post Content -->
+    <div class="container">
+      <article>
+        <!-- Title date & tags -->
+        <div class="post-header">
+          <h1 class="entry-title">
+            CentOS7安装MySQL8.0
+            
+          </h1>
+          <p class="posted-on">
+          2019-07-12
+          </p>
+          <div class="tags-links">
+            
+              
+                <a href="/tags/CentOS7/" rel="tag">
+                  CentOS7
+                </a>
+              
+                <a href="/tags/MySQL/" rel="tag">
+                  MySQL
+                </a>
+              
+            
+          </div>
+        </div>
+        <!-- Post Main Content -->
+        <div class="entry-content has_line_number">
+          <h2 id="CentOS7安装MySQL8-0"><a href="#CentOS7安装MySQL8-0" class="headerlink" title="CentOS7安装MySQL8.0"></a>CentOS7安装MySQL8.0</h2><p>1.下载 MySQL 所需要的安装包</p>
+<pre><code>网址：https://dev.mysql.com/downloads/mysql/</code></pre><p>2.Select Operating System: 选择 Red Hat ，CentOS 是基于红帽的，Select OS Version: 选择 linux 7</p>
+<p>3.选择 RPM Bundle 点击 Download</p>
+<p>4.点击 No thanks, just start my download. 进行下载</p>
+<p>5.下载好了</p>
+<p>6.打开 VMware，选中要使用的虚拟机，点击开启此虚拟机</p>
+<p>7.最小化虚拟机，不用管他了</p>
+<p>8.打开 xshell，选择虚拟机 ip 所对应的会话，点击连接</p>
+<p>9.连接成功</p>
+<p>10.通过 rpm -qa | grep mariadb 命令查看 mariadb 的安装包</p>
+<p>11.通过 rpm -e mariadb-libs-5.5.56-2.el7.x86_64 –nodeps 命令装卸 mariadb</p>
+<p>12.通过 rpm -qa | grep mariadb 命令再次查看 mariadb 的安装包</p>
+<p>13.通过 cd /usr/local/ 命令进入根目录下的usr目录下的local目录，这个目录是放一些本地的共享资源的</p>
+<p>14.通过 ll 命令查看一下当前目录下的目录结构</p>
+<p>15.通过 mkdir mysql 命令 在当前目录下创建一个名为 mysql 的目录</p>
+<p>16.通过 ll 命令查看一下当前目录下的目录结构，刚创建的 mysql 目录有了</p>
+<p>17.通过 cd mysql 命令进入 mysql 目录</p>
+<p>18.通过 ll 命令查看一下当前目录下的目录结构</p>
+<p>19.点击 窗口 –&gt;&gt; 传输新建文件，通过 ftp 协议来把刚下载好的 mysql 安装包传输到 CentOS7 系统中</p>
+<p>20.在左边找到你 mysql 安装包的下载目录</p>
+<p>21.在你想要传输的文件上单机右键，点击传输</p>
+<p>22.上传成功后，关闭 ftp 传输工具</p>
+<p>23.通过 ll 命令查看一下当前目录下的目录结构</p>
+<p>24.通过 tar -xvf mysql-8.0.11-1.el7.x86_64.rpm-bundle.tar  命令解压 tar 包</p>
+<p>25.通过 clear 命令清一下屏</p>
+<p>26.通过 rpm -ivh mysql-community-common-8.0.11-1.el7.x86_64.rpm –nodeps –force 命令安装 common</p>
+<p>27.通过 rpm -ivh mysql-community-libs-8.0.11-1.el7.x86_64.rpm –nodeps –force 命令安装 libs</p>
+<p>28.通过 rpm -ivh mysql-community-client-8.0.11-1.el7.x86_64.rpm –nodeps –force 命令安装 client</p>
+<p>29.通过 rpm -ivh mysql-community-server-8.0.11-1.el7.x86_64.rpm –nodeps –force 命令安装 server</p>
+<p>30.通过 rpm -qa | grep mysql 命令查看 mysql 的安装包</p>
+<p>31.通过以下命令，完成对 mysql 数据库的初始化和相关配置</p>
+<p>mysqld –initialize;<br>chown mysql:mysql /var/lib/mysql -R;<br>systemctl start mysqld.service;<br>systemctl  enable mysqld;</p>
+<p>32.通过 cat /var/log/mysqld.log | grep password 命令查看数据库的密码</p>
+<p>33.通过 mysql -uroot -p 敲回车键进入数据库登陆界面</p>
+<p>34.输入刚刚查到的密码，进行数据库的登陆，复制粘贴就行，MySQL 的登陆密码也是不显示的</p>
+<p>35.通过 ALTER USER ‘root’@’localhost’ IDENTIFIED WITH mysql_native_password BY ‘root’; 命令来修改密码</p>
+<p>36.通过 exit; 命令退出 MySQL，然后通过新密码再次登陆</p>
+<p>37.通过以下命令，进行远程访问的授权</p>
+<p>create user ‘root’@’%’ identified with mysql_native_password by ‘root’;<br>grant all privileges on <em>.</em> to ‘root’@’%’ with grant option;<br>flush privileges;</p>
+<p>38.通过 ALTER USER ‘root’@’localhost’ IDENTIFIED BY ‘root’ PASSWORD EXPIRE NEVER; 命令修改加密规则，MySql8.0 版本 和 5.0 的加密规则不一样，而现在的可视化工具只支持旧的加密方式。</p>
+<p>39.通过 flush privileges; 命令刷新修该后的权限</p>
+<p>40.通过 exit; 命令退出 MySQL</p>
+<p>41.通过以下命令，关闭 firewall</p>
+<p>systemctl stop firewalld.service;<br>systemctl disable firewalld.service;<br>systemctl mask firewalld.service;</p>
+<p>42.通过 yum -y install iptables-services  命令安装 iptables 防火墙</p>
+<p>43.通过以下命令启动设置防火墙</p>
+<p>systemctl enable iptables;<br>systemctl start iptables;</p>
+<p>44.通过 vim /etc/sysconfig/iptables 命令编辑防火墙，添加端口</p>
+<p>45.点击 i 键进入插入模式</p>
+<p>46.在相关位置，写入以下内容</p>
+<p>-A INPUT -m state –state NEW -m tcp -p tcp –dport 80 -j ACCEPT<br>-A INPUT -m state –state NEW -m tcp -p tcp –dport 3306 -j ACCEPT<br>-A INPUT -m state –state NEW -m tcp -p tcp –dport 443 -j ACCEPT<br>-A INPUT -m state –state NEW -m tcp -p tcp –dport 8080 -j ACCEPT<br>-A INPUT -m state –state NEW -m tcp -p tcp –dport 8090 -j ACCEPT</p>
+<p>47.点击 ESC 键退出插入模式</p>
+<p>48.点击 : 键，输入 wq 敲回车键保存退出，: 为英文状态下的</p>
+<p>49.通过 systemctl restart iptables.service 命令重启防火墙使配置生效</p>
+<p>50.通过 systemctl enable iptables.service 命令设置防火墙开机启动</p>
+<p>51.通过 ifconfig 命令查看 ip</p>
+<p>52.新建 SQLyog  的连接</p>
+<p>53.连接成功</p>
+
+        </div>
+      </article>
+    </div>
+    <!-- Comments -->
+    <div class="container">
+      
+<section id="comment">
+  <!-- <h1 class="title">Comments</h1> -->
+
+  
+  <div id="disqus_thread">
+    <script type="text/javascript">
+    var disqus_config = function () {
+          this.page.url = window.location.href;
+          this.page.identifier = 'post-CentOS7安装MySQL8.0';
+          this.page.title = 'CentOS7安装MySQL8.0';
+      };
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+    </div>
+    <!-- Pre or Next -->
+    <div class="nav-links">
+      
+        <div class="nav-previous">
+          <a href="/2019/07/在线安装Mysql/" rel="prev"><span class="meta-arraw meta-arraw-left"></span> Older Posts</a>
+        </div>
+      
+      
+        <div class="nav-next">
+          <a href="/2019/06/Hadoop-伪分布式搭建/" rel="prev">Newer Posts <span class="meta-arraw meta-arraw-right"></span></a>
+        </div>
+      
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Footer -->
+  <!-- Footer-widgets -->
+<div class="footer-widgets">
+  <div class="row inside-wrapper">
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">关于本站</h1>
+        <div class="custom-widget-content">
+          
+          <p align="left">日语专业小白转程序员。<br>阅读使人明智。</p>
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Contact</h1>
+        <div class="widget-text">
+          
+            
+              <a href="https://github.com/pauloil" class="icon icon-github" target="_blank">github</a>
+            
+              <a href="mailto:sauriky29@gamil.com" class="icon icon-mail" target="_blank">mail</a>
+            
+          
+        </div>
+      </aside>
+    </div>
+    <div class="col-1-3">
+      <aside>
+        <h1 class="widget-title">Search</h1>
+        <div class="widget-text">
+          <form onSubmit="return appDaily.submitSearch('')">
+            <p>
+              <input type="text" placeholder="search..." id="homeSearchInput">
+            </p>
+            <!-- <input type="submit" value="GO"> -->
+          </form>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="site-info">
+  <p>
+    <span>Sauriky's World &copy; 2020</span>
+    
+      <span class="split">|</span>
+      <span>Powered by Sauriky</span>
+    
+  </p>
+</footer>
+
+
+  <!-- After footer scripts -->
+  <!-- scripts -->
+
+<script src="/js/app.js"></script>
+
+
+<script>
+  var disqus_shortname = 'hinpc';
+
+  
+  var disqus_url = 'blog.sauriky.site/2019/07/CentOS7%E5%AE%89%E8%A3%85MySQL8.0/';
+  
+
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+
+
+</body>
+
+</html>
